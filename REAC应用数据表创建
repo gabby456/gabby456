@@ -1,0 +1,54 @@
+#创建表
+##用户表
+-- 用户表:主键username外键role_id
+CREATE TABLE `users` (
+`username` varchar(50) NOT NULL,
+`userpwd` varchar(50) DEFAULT NULL,
+`role_id` int(11) DEFAULT NULL,
+PRIMARY KEY (`username`),
+KEY `users_fk` (`role_id`),
+CONSTRAINT `users_fk` FOREIGN KEY (`role_id`) REFERENCES `roles` (`roleid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+##角色表
+-- 角色表:主键roleid
+CREATE TABLE `roles` (
+`roleid` int(11) NOT NULL AUTO_INCREMENT,
+`rolename` varchar(50) DEFAULT NULL,
+PRIMARY KEY (`roleid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+##菜单表
+-- 菜单表:主键menuid
+CREATE TABLE `menus` (
+`menuid` int(11) NOT NULL AUTO_INCREMENT,
+`menuname` varchar(50) DEFAULT NULL,
+`menuurl` varchar(50) DEFAULT NULL,
+`fatherid` int(11) DEFAULT NULL,
+PRIMARY KEY (`menuid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+##中间表
+-- 角色-菜单中间表:主键roles_id`,`menus_id
+CREATE TABLE `roles_menus` (
+`roles_id` int(11) NOT NULL,
+`menus_id` int(11) NOT NULL,
+PRIMARY KEY (`roles_id`,`menus_id`),
+KEY `roles_menus_fk2` (`menus_id`),
+CONSTRAINT `roles_menus_fk1` FOREIGN KEY (`roles_id`) REFERENCES `roles`(`roleid`),
+CONSTRAINT `roles_menus_fk2` FOREIGN KEY (`menus_id`) REFERENCES `menus`(`menuid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+##功能表
+-- 功能表:主键 funid,外键menu_id
+CREATE TABLE `fu多s` (
+`funid` int(11) NOT NULL AUTO_INCREMENT,
+`funname` varchar(50) DEFAULT NULL,
+`funurl` varchar(50) DEFAULT NULL,
+`menu_id` int(11) DEFAULT NULL,
+PRIMARY KEY (`funid`),
+KEY `menus_fk` (`menu_id`),
+CONSTRAINT `menus_fk` FOREIGN KEY (`menu_id`) REFERENCES `menus`
+(`menuid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
